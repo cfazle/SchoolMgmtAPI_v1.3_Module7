@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using NLog;
 using System.IO;
 using AutoMapper;
+using Contracts;
 
 namespace SchoolMgmtAPI
 {
@@ -32,12 +33,23 @@ namespace SchoolMgmtAPI
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerManager logger)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseHsts();
+            }
+            app.ConfigureExceptionHandler(logger);
+            app.UseHttpsRedirection();
+            app.UseStaticFiles(); 
+            app.UseCors("CorsPolicy");
+            app.UseForwardedHeaders( new ForwardedHeadersOptions {
+                ForwardedHeaders = ForwardedHeaders.All 
+            });
 
             app.UseRouting();
 

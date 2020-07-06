@@ -32,25 +32,18 @@ namespace SchoolMgmtAPI.Controllers
        
         public IActionResult GetOrganizations()
         {
-            try
-            {
+          
                 var organizations = _repository.Organization.GetAllOrganizations(trackChanges: false);
               //  return Ok(organizations);
                 var organizationDto = _mapper.Map<IEnumerable<OrganizationDto>>(organizations);
                return Ok(organizationDto);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Something went wrong in the {nameof(GetOrganizations)} action {ex}");
-                return StatusCode(500, "Internal server error");
-            }
+          
         }
 
         [HttpGet("{id}")]
         public IActionResult GetOrganization(Guid id)
         {
-            try
-            {
+            
                 var organization = _repository.Organization.GetOrganization(id, trackChanges: false);
                 if (organization == null)
                 {
@@ -62,11 +55,7 @@ namespace SchoolMgmtAPI.Controllers
                     var organizationDto = _mapper.Map<OrganizationDto>(organization);
                     return Ok(organizationDto);
                 }
-            }catch (Exception ex)
-            {
-                _logger.LogError($"Something went wront in the {nameof(GetOrganizations)} action(ex)");
-                return StatusCode(500, "Internal server error");
-            }
+            
         }
     }
 }
