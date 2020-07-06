@@ -16,6 +16,8 @@ namespace SchoolMgmtAPI
                 (c => c.FullAddress, opt => opt.MapFrom(x => string.Join(",", x.Address, x.Country)));
 
             CreateMap<User, UserDto>();
+
+            CreateMap<Course, CourseDto>();
         }
     }
 }
