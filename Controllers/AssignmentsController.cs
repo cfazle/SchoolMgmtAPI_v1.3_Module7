@@ -59,7 +59,7 @@ namespace SchoolMgmtAPI.Controllers
                 return NotFound();
             }
 
-            var assignment = _mapper.Map<EnrollmentDto>(assignmentDb);
+            var assignment = _mapper.Map<AssignmentDto>(assignmentDb);
 
             return Ok(assignment);
         }

@@ -24,6 +24,8 @@ namespace SchoolMgmtAPI
             CreateMap<Enrollment, EnrollmentDto>();
 
             CreateMap<Assignment, AssignmentDto>();
+
+            CreateMap<Submission, SubmissionDto>();
         }
     }
 }

@@ -8,20 +8,6 @@ namespace SchoolMgmtAPI.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Assignments",
-                columns: table => new
-                {
-                    AssignmentId = table.Column<Guid>(nullable: false),
-                    Title = table.Column<string>(maxLength: 30, nullable: false),
-                    Description = table.Column<string>(maxLength: 200, nullable: false),
-                    EnrollmentId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Assignments", x => x.AssignmentId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Organizations",
                 columns: table => new
                 {
@@ -57,16 +43,36 @@ namespace SchoolMgmtAPI.Migrations
                 columns: table => new
                 {
                     SubmissionId = table.Column<Guid>(nullable: false),
-                    SubmissionText = table.Column<string>(maxLength: 60, nullable: false),
+                    SubmissionTitle = table.Column<string>(maxLength: 60, nullable: false),
                     Score = table.Column<int>(nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "Date", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "Date", nullable: false),
-                    AssignmentId = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: false)
+                    AssignmentId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Submissions", x => x.SubmissionId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Assignments",
+                columns: table => new
+                {
+                    AssignmentId = table.Column<Guid>(nullable: false),
+                    Title = table.Column<string>(maxLength: 30, nullable: false),
+                    Description = table.Column<string>(maxLength: 200, nullable: false),
+                    EnrollmentId = table.Column<Guid>(nullable: false),
+                    SubmissionId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Assignments", x => x.AssignmentId);
+                    table.ForeignKey(
+                        name: "FK_Assignments_Submissions_SubmissionId",
+                        column: x => x.SubmissionId,
+                        principalTable: "Submissions",
+                        principalColumn: "SubmissionId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -132,8 +138,7 @@ namespace SchoolMgmtAPI.Migrations
                     CreatedDate = table.Column<DateTime>(type: "Date", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "Date", nullable: false),
                     OrganizationId = table.Column<Guid>(nullable: false),
-                    CourseId = table.Column<Guid>(nullable: true),
-                    SubmissionId = table.Column<Guid>(nullable: true)
+                    CourseId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -150,34 +155,28 @@ namespace SchoolMgmtAPI.Migrations
                         principalTable: "Organizations",
                         principalColumn: "OrganizationId",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Users_Submissions_SubmissionId",
-                        column: x => x.SubmissionId,
-                        principalTable: "Submissions",
-                        principalColumn: "SubmissionId",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
                 table: "Assignments",
-                columns: new[] { "AssignmentId", "Description", "EnrollmentId", "Title" },
+                columns: new[] { "AssignmentId", "Description", "EnrollmentId", "SubmissionId", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("80abbca8-664d-4b20-b5de-024705498a4b"), "Entity and databae connection", new Guid("80abbca8-664d-4b20-b5de-024705497c6e"), "Module 1" },
-                    { new Guid("80abbca8-664d-4b20-b5de-024705498b4a"), "Get Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497c6e"), "Module 2" },
-                    { new Guid("80abbca8-664d-4b20-b5de-024705498c4c"), "Post Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497c6e"), "Module 3" },
-                    { new Guid("80abbca8-664d-4b20-b5de-024705498e2a"), "Get Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497c7e"), "Module1" },
-                    { new Guid("80abbca8-664d-4b20-b5de-024705498e3a"), "Post Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497c7e"), "Module2" },
-                    { new Guid("80abbca8-664d-4b20-b5de-024705498a3b"), "Delete Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497c7e"), "Module3" },
-                    { new Guid("80abbca8-664d-4b20-b5de-024705497c3e"), "Get Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497d9e"), "Module1" },
-                    { new Guid("80abbca8-564d-4b20-b5de-024705496d3e"), "Post Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497d9e"), "Module2" },
-                    { new Guid("80abbca8-634d-4b20-b5de-024705495a1e"), "Update Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497d9e"), "Module3" },
-                    { new Guid("80abbca8-624d-4b20-b5de-024705495a1e"), "Get Operation ", new Guid("80abbca8-664d-4b20-b6de-024705497c1e"), "Module2" },
-                    { new Guid("80abbca8-66cd-4b20-b5de-024705495a1a"), "Update Operation ", new Guid("80abbca8-664d-4b20-b6de-024705497c1e"), "Module3" },
-                    { new Guid("80abbca8-66ed-4b20-b5de-024705495e1e"), "Update Operation ", new Guid("80abbca8-664d-4b20-b6de-024705497c1e"), "Module3" },
-                    { new Guid("80abbca8-662d-4b20-b5de-024705495a2e"), "Update Operation ", new Guid("80abbca8-664d-4b20-e5de-024705497c2e"), "Module3" },
-                    { new Guid("80abbca8-664d-3a20-b5de-024705494a2e"), "Teacher assigns to students homework", new Guid("80abbca8-664d-4b20-d6de-024705497d9e"), "Module3" },
-                    { new Guid("80abbca8-664d-40b2-b5de-024705494a2e"), "Admin created assignment ", new Guid("80abbca8-664d-4b20-c6de-024705497d8e"), "Module3" }
+                    { new Guid("80abbca8-664d-4b20-b5de-024705498a4b"), "Entity and databae connection", new Guid("80abbca8-664d-4b20-b5de-024705497c6e"), null, "Module 1" },
+                    { new Guid("80abbca8-664d-40b2-b5de-024705494a2e"), "Admin created assignment ", new Guid("80abbca8-664d-4b20-c6de-024705497d8e"), null, "Module3" },
+                    { new Guid("80abbca8-664d-3a20-b5de-024705494a2e"), "Teacher assigns to students homework", new Guid("80abbca8-664d-4b20-d6de-024705497d9e"), null, "Module3" },
+                    { new Guid("80abbca8-662d-4b20-b5de-024705495a2e"), "Update Operation ", new Guid("80abbca8-664d-4b20-e5de-024705497c2e"), null, "Module3" },
+                    { new Guid("80abbca8-66ed-4b20-b5de-024705495e1e"), "Update Operation ", new Guid("80abbca8-664d-4b20-b6de-024705497c1e"), null, "Module3" },
+                    { new Guid("80abbca8-624d-4b20-b5de-024705495a1e"), "Get Operation ", new Guid("80abbca8-664d-4b20-b6de-024705497c1e"), null, "Module2" },
+                    { new Guid("80abbca8-634d-4b20-b5de-024705495a1e"), "Update Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497d9e"), null, "Module3" },
+                    { new Guid("80abbca8-66cd-4b20-b5de-024705495a1a"), "Update Operation ", new Guid("80abbca8-664d-4b20-b6de-024705497c1e"), null, "Module3" },
+                    { new Guid("80abbca8-664d-4b20-b5de-024705497c3e"), "Get Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497d9e"), null, "Module1" },
+                    { new Guid("80abbca8-664d-4b20-b5de-024705498a3b"), "Delete Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497c7e"), null, "Module3" },
+                    { new Guid("80abbca8-664d-4b20-b5de-024705498e3a"), "Post Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497c7e"), null, "Module2" },
+                    { new Guid("80abbca8-664d-4b20-b5de-024705498e2a"), "Get Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497c7e"), null, "Module1" },
+                    { new Guid("80abbca8-664d-4b20-b5de-024705498c4c"), "Post Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497c6e"), null, "Module 3" },
+                    { new Guid("80abbca8-664d-4b20-b5de-024705498b4a"), "Get Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497c6e"), null, "Module 2" },
+                    { new Guid("80abbca8-564d-4b20-b5de-024705496d3e"), "Post Operation ", new Guid("80abbca8-664d-4b20-b5de-024705497d9e"), null, "Module2" }
                 });
 
             migrationBuilder.InsertData(
@@ -185,9 +184,9 @@ namespace SchoolMgmtAPI.Migrations
                 columns: new[] { "CourseId", "CourseName", "CreatedDate", "EnrollmentId", "SectionId", "UpdatedDate", "UserId" },
                 values: new object[,]
                 {
-                    { new Guid("021ca3c1-0deb-4afd-ae94-2159a8479822"), "IS690", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d4a") },
+                    { new Guid("80abbca8-664d-4b20-b5de-024705497d4b"), "Acc101", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d4a") },
                     { new Guid("86dba8c0-d178-41e7-938c-ed49778fb52c"), "Math108", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d4a") },
-                    { new Guid("80abbca8-664d-4b20-b5de-024705497d4b"), "Acc101", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d4a") }
+                    { new Guid("021ca3c1-0deb-4afd-ae94-2159a8479822"), "IS690", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), null, null, new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d4a") }
                 });
 
             migrationBuilder.InsertData(
@@ -195,13 +194,13 @@ namespace SchoolMgmtAPI.Migrations
                 columns: new[] { "EnrollmentId", "AssignmentId", "AttributeName", "CreatedDate", "EndDate", "SectionId", "StartDate", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { new Guid("80abbca8-664d-4b20-b4de-024705497c5e"), null, "Student", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d5a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("80abbca8-664d-4b20-c5de-024705497c1e"), null, "Teacher", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d5a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("80abbca8-664d-4b20-d5de-024705497c2c"), null, "Student", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d5a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("80abbca8-664d-4b20-e5de-024705497c2e"), null, "Student", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d6a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("80abbca8-664d-4b20-b6de-024705497c1e"), null, "Student", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d6a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
                     { new Guid("80abbca8-664d-4b20-c6de-024705497d8e"), null, "Admin", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d6a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { new Guid("80abbca8-664d-4b20-d6de-024705497d9e"), null, "Teacher", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d6a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { new Guid("80abbca8-664d-4b20-d6de-024705497d9e"), null, "Teacher", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d6a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("80abbca8-664d-4b20-b6de-024705497c1e"), null, "Student", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d6a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("80abbca8-664d-4b20-b4de-024705497c5e"), null, "Student", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d5a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("80abbca8-664d-4b20-d5de-024705497c2c"), null, "Student", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d5a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("80abbca8-664d-4b20-c5de-024705497c1e"), null, "Teacher", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d5a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("80abbca8-664d-4b20-e5de-024705497c2e"), null, "Student", new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d6a"), new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -209,8 +208,8 @@ namespace SchoolMgmtAPI.Migrations
                 columns: new[] { "OrganizationId", "Address", "Country", "OrgName" },
                 values: new object[,]
                 {
-                    { new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"), "3036 English Creek Ave, EHT, NJ 08234", "USA", "lmnop org" },
-                    { new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"), "583 Wall Dr. Gwynn Oak, MD 21207", "USA", "xyz org" }
+                    { new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"), "583 Wall Dr. Gwynn Oak, MD 21207", "USA", "xyz org" },
+                    { new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"), "3036 English Creek Ave, EHT, NJ 08234", "USA", "lmnop org" }
                 });
 
             migrationBuilder.InsertData(
@@ -228,23 +227,34 @@ namespace SchoolMgmtAPI.Migrations
 
             migrationBuilder.InsertData(
                 table: "Submissions",
-                columns: new[] { "SubmissionId", "AssignmentId", "CreatedDate", "Score", "SubmissionText", "UpdatedDate", "UserId" },
-                values: new object[] { new Guid("80abbca8-664d-4b20-b5de-024705493d5a"), new Guid("80abbca8-664d-4b20-b5de-024705498a4b"), new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 100, "Module 1 submission", new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("80abbca8-664d-4b20-b5de-024705497d4a") });
+                columns: new[] { "SubmissionId", "AssignmentId", "CreatedDate", "Score", "SubmissionTitle", "UpdatedDate" },
+                values: new object[,]
+                {
+                    { new Guid("80abbca8-613d-4b20-bcde-024705493d5a"), new Guid("80abbca8-66ed-4b20-b5de-024705495e1e"), new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 100, "Module 2 submission", new DateTime(2020, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("80abbca8-611d-4b20-b5de-024705493d5a"), new Guid("80abbca8-664d-4b20-b5de-024705498a4b"), new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 100, "Module 1 submission", new DateTime(2020, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("80abbca8-612d-4b20-bbde-024705493d5a"), new Guid("80abbca8-624d-4b20-b5de-024705495a1e"), new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 100, "Module 2 submission", new DateTime(2020, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { new Guid("80abbca8-614d-4b20-bcde-024705493d5a"), new Guid("80abbca8-662d-4b20-b5de-024705495a2e"), new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), 100, "Module 2 submission", new DateTime(2020, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified) }
+                });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "CourseId", "CreatedDate", "Email", "OrganizationId", "SubmissionId", "UpdatedDate", "UserName" },
-                values: new object[] { new Guid("80abbca8-664d-4b20-b5de-024705497d4a"), null, new DateTime(2018, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "abc@gmail.com", new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"), null, new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "fchoudhury" });
+                columns: new[] { "UserId", "CourseId", "CreatedDate", "Email", "OrganizationId", "UpdatedDate", "UserName" },
+                values: new object[] { new Guid("80abbca8-664d-4b20-b5de-024705497d4a"), null, new DateTime(2018, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "abc@gmail.com", new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "fchoudhury" });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "CourseId", "CreatedDate", "Email", "OrganizationId", "SubmissionId", "UpdatedDate", "UserName" },
-                values: new object[] { new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"), null, new DateTime(2018, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "xyz@gmail.com", new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"), null, new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "fac3" });
+                columns: new[] { "UserId", "CourseId", "CreatedDate", "Email", "OrganizationId", "UpdatedDate", "UserName" },
+                values: new object[] { new Guid("86dba8c0-d178-41e7-938c-ed49778fb52a"), null, new DateTime(2018, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified), "xyz@gmail.com", new Guid("c9d4c053-49b6-410c-bc78-2d54a9991870"), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "fac3" });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "UserId", "CourseId", "CreatedDate", "Email", "OrganizationId", "SubmissionId", "UpdatedDate", "UserName" },
-                values: new object[] { new Guid("021ca3c1-0deb-4afd-ae94-2159a8479811"), null, new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "efg@gmail.com", new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"), null, new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "fac33" });
+                columns: new[] { "UserId", "CourseId", "CreatedDate", "Email", "OrganizationId", "UpdatedDate", "UserName" },
+                values: new object[] { new Guid("021ca3c1-0deb-4afd-ae94-2159a8479811"), null, new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified), "efg@gmail.com", new Guid("3d490a70-94ce-4d15-9494-5248280c2ce3"), new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified), "fac33" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Assignments_SubmissionId",
+                table: "Assignments",
+                column: "SubmissionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Courses_EnrollmentId",
@@ -270,11 +280,6 @@ namespace SchoolMgmtAPI.Migrations
                 name: "IX_Users_OrganizationId",
                 table: "Users",
                 column: "OrganizationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_SubmissionId",
-                table: "Users",
-                column: "SubmissionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -289,9 +294,6 @@ namespace SchoolMgmtAPI.Migrations
                 name: "Organizations");
 
             migrationBuilder.DropTable(
-                name: "Submissions");
-
-            migrationBuilder.DropTable(
                 name: "Enrollments");
 
             migrationBuilder.DropTable(
@@ -299,6 +301,9 @@ namespace SchoolMgmtAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Assignments");
+
+            migrationBuilder.DropTable(
+                name: "Submissions");
         }
     }
 }

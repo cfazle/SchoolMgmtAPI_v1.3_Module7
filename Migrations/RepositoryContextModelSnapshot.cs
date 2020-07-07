@@ -34,12 +34,17 @@ namespace SchoolMgmtAPI.Migrations
                     b.Property<Guid>("EnrollmentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("SubmissionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SubmissionId");
 
                     b.ToTable("Assignments");
 
@@ -473,16 +478,13 @@ namespace SchoolMgmtAPI.Migrations
                     b.Property<int>("Score")
                         .HasColumnType("int");
 
-                    b.Property<string>("SubmissionText")
+                    b.Property<string>("SubmissionTitle")
                         .IsRequired()
                         .HasColumnType("nvarchar(60)")
                         .HasMaxLength(60);
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("Date");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -491,13 +493,39 @@ namespace SchoolMgmtAPI.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("80abbca8-664d-4b20-b5de-024705493d5a"),
+                            Id = new Guid("80abbca8-611d-4b20-b5de-024705493d5a"),
                             AssignmentId = new Guid("80abbca8-664d-4b20-b5de-024705498a4b"),
                             CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Score = 100,
-                            SubmissionText = "Module 1 submission",
-                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = new Guid("80abbca8-664d-4b20-b5de-024705497d4a")
+                            SubmissionTitle = "Module 1 submission",
+                            UpdatedDate = new DateTime(2020, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-612d-4b20-bbde-024705493d5a"),
+                            AssignmentId = new Guid("80abbca8-624d-4b20-b5de-024705495a1e"),
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Score = 100,
+                            SubmissionTitle = "Module 2 submission",
+                            UpdatedDate = new DateTime(2020, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-613d-4b20-bcde-024705493d5a"),
+                            AssignmentId = new Guid("80abbca8-66ed-4b20-b5de-024705495e1e"),
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Score = 100,
+                            SubmissionTitle = "Module 2 submission",
+                            UpdatedDate = new DateTime(2020, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-614d-4b20-bcde-024705493d5a"),
+                            AssignmentId = new Guid("80abbca8-662d-4b20-b5de-024705495a2e"),
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Score = 100,
+                            SubmissionTitle = "Module 2 submission",
+                            UpdatedDate = new DateTime(2020, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -522,9 +550,6 @@ namespace SchoolMgmtAPI.Migrations
                     b.Property<Guid>("OrganizationId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("SubmissionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("Date");
 
@@ -538,8 +563,6 @@ namespace SchoolMgmtAPI.Migrations
                     b.HasIndex("CourseId");
 
                     b.HasIndex("OrganizationId");
-
-                    b.HasIndex("SubmissionId");
 
                     b.ToTable("Users");
 
@@ -573,6 +596,13 @@ namespace SchoolMgmtAPI.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Entities.Models.Assignment", b =>
+                {
+                    b.HasOne("Entities.Models.Submission", null)
+                        .WithMany("Assignments")
+                        .HasForeignKey("SubmissionId");
+                });
+
             modelBuilder.Entity("Entities.Models.Course", b =>
                 {
                     b.HasOne("Entities.Models.Enrollment", null)
@@ -602,10 +632,6 @@ namespace SchoolMgmtAPI.Migrations
                         .HasForeignKey("OrganizationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Entities.Models.Submission", null)
-                        .WithMany("Users")
-                        .HasForeignKey("SubmissionId");
                 });
 #pragma warning restore 612, 618
         }
