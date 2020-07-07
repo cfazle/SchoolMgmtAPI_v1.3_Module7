@@ -18,6 +18,12 @@ namespace SchoolMgmtAPI
             CreateMap<User, UserDto>();
 
             CreateMap<Course, CourseDto>();
+
+            CreateMap<Section, SectionDto>();
+
+            CreateMap<Enrollment, EnrollmentDto>();
+
+            CreateMap<Assignment, AssignmentDto>();
         }
     }
 }

@@ -31,7 +31,7 @@ namespace SchoolMgmtAPI.Migrations
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
 
-                    b.Property<Guid>("SectionId")
+                    b.Property<Guid>("EnrollmentId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
@@ -48,8 +48,106 @@ namespace SchoolMgmtAPI.Migrations
                         {
                             Id = new Guid("80abbca8-664d-4b20-b5de-024705498a4b"),
                             Description = "Entity and databae connection",
-                            SectionId = new Guid("80abbca8-664d-4b20-b5de-024705497d5a"),
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-b5de-024705497c6e"),
                             Title = "Module 1"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b5de-024705498b4a"),
+                            Description = "Get Operation ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-b5de-024705497c6e"),
+                            Title = "Module 2"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b5de-024705498c4c"),
+                            Description = "Post Operation ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-b5de-024705497c6e"),
+                            Title = "Module 3"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b5de-024705498e2a"),
+                            Description = "Get Operation ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-b5de-024705497c7e"),
+                            Title = "Module1"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b5de-024705498e3a"),
+                            Description = "Post Operation ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-b5de-024705497c7e"),
+                            Title = "Module2"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b5de-024705498a3b"),
+                            Description = "Delete Operation ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-b5de-024705497c7e"),
+                            Title = "Module3"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b5de-024705497c3e"),
+                            Description = "Get Operation ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-b5de-024705497d9e"),
+                            Title = "Module1"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-564d-4b20-b5de-024705496d3e"),
+                            Description = "Post Operation ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-b5de-024705497d9e"),
+                            Title = "Module2"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-634d-4b20-b5de-024705495a1e"),
+                            Description = "Update Operation ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-b5de-024705497d9e"),
+                            Title = "Module3"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-624d-4b20-b5de-024705495a1e"),
+                            Description = "Get Operation ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-b6de-024705497c1e"),
+                            Title = "Module2"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-66cd-4b20-b5de-024705495a1a"),
+                            Description = "Update Operation ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-b6de-024705497c1e"),
+                            Title = "Module3"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-66ed-4b20-b5de-024705495e1e"),
+                            Description = "Update Operation ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-b6de-024705497c1e"),
+                            Title = "Module3"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-662d-4b20-b5de-024705495a2e"),
+                            Description = "Update Operation ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-e5de-024705497c2e"),
+                            Title = "Module3"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-3a20-b5de-024705494a2e"),
+                            Description = "Teacher assigns to students homework",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-d6de-024705497d9e"),
+                            Title = "Module3"
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-40b2-b5de-024705494a2e"),
+                            Description = "Admin created assignment ",
+                            EnrollmentId = new Guid("80abbca8-664d-4b20-c6de-024705497d8e"),
+                            Title = "Module3"
                         });
                 });
 
@@ -122,6 +220,9 @@ namespace SchoolMgmtAPI.Migrations
                         .HasColumnName("EnrollmentId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("AssignmentId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("AttributeName")
                         .IsRequired()
                         .HasColumnType("nvarchar(30)")
@@ -142,24 +243,82 @@ namespace SchoolMgmtAPI.Migrations
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("Date");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AssignmentId");
 
                     b.ToTable("Enrollments");
 
                     b.HasData(
                         new
                         {
-                            Id = new Guid("80abbca8-664d-4b20-b5de-024705497c5e"),
-                            AttributeName = "Fazle (Student)",
+                            Id = new Guid("80abbca8-664d-4b20-b4de-024705497c5e"),
+                            AttributeName = "Student",
                             CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             SectionId = new Guid("80abbca8-664d-4b20-b5de-024705497d5a"),
                             StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UserId = new Guid("80abbca8-664d-4b20-b5de-024705497d4a")
+                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-c5de-024705497c1e"),
+                            AttributeName = "Teacher",
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SectionId = new Guid("80abbca8-664d-4b20-b5de-024705497d5a"),
+                            StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-d5de-024705497c2c"),
+                            AttributeName = "Student",
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SectionId = new Guid("80abbca8-664d-4b20-b5de-024705497d5a"),
+                            StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-e5de-024705497c2e"),
+                            AttributeName = "Student",
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SectionId = new Guid("80abbca8-664d-4b20-b5de-024705497d6a"),
+                            StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b6de-024705497c1e"),
+                            AttributeName = "Student",
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SectionId = new Guid("80abbca8-664d-4b20-b5de-024705497d6a"),
+                            StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-c6de-024705497d8e"),
+                            AttributeName = "Admin",
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SectionId = new Guid("80abbca8-664d-4b20-b5de-024705497d6a"),
+                            StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-d6de-024705497d9e"),
+                            AttributeName = "Teacher",
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            SectionId = new Guid("80abbca8-664d-4b20-b5de-024705497d6a"),
+                            StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -211,9 +370,6 @@ namespace SchoolMgmtAPI.Migrations
                         .HasColumnName("SectionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AssignmentId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier");
 
@@ -226,12 +382,15 @@ namespace SchoolMgmtAPI.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("Date");
 
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(30)")
+                        .HasMaxLength(30);
+
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("Date");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssignmentId");
 
                     b.ToTable("Sections");
 
@@ -243,15 +402,57 @@ namespace SchoolMgmtAPI.Migrations
                             CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Type = "Online",
                             UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = new Guid("80abbca8-664d-4b20-b5de-024705497d6a"),
+                            CourseId = new Guid("80abbca8-664d-4b20-b5de-024705497d4b"),
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Type = "On Campus",
+                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b5de-024705497d7a"),
+                            CourseId = new Guid("021ca3c1-0deb-4afd-ae94-2159a8479822"),
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Type = "On Campus",
+                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b5de-024705497d8a"),
+                            CourseId = new Guid("021ca3c1-0deb-4afd-ae94-2159a8479822"),
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Type = "Online",
+                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b5de-024705497d9a"),
                             CourseId = new Guid("86dba8c0-d178-41e7-938c-ed49778fb52c"),
                             CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Type = "Online",
+                            UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = new Guid("80abbca8-664d-4b20-b5de-024705497d9c"),
+                            CourseId = new Guid("86dba8c0-d178-41e7-938c-ed49778fb52c"),
+                            CreatedDate = new DateTime(2019, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EndDate = new DateTime(2020, 8, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2020, 5, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Type = "On Campus",
                             UpdatedDate = new DateTime(2019, 6, 24, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -383,10 +584,10 @@ namespace SchoolMgmtAPI.Migrations
                         .HasForeignKey("SectionId");
                 });
 
-            modelBuilder.Entity("Entities.Models.Section", b =>
+            modelBuilder.Entity("Entities.Models.Enrollment", b =>
                 {
                     b.HasOne("Entities.Models.Assignment", null)
-                        .WithMany("Sections")
+                        .WithMany("Enrollments")
                         .HasForeignKey("AssignmentId");
                 });
 

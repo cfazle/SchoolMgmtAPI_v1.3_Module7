@@ -41,5 +41,27 @@ namespace SchoolMgmtAPI.Controllers
             return Ok(coursesDto);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetCourseForUser(Guid userId, Guid id)
+        {
+            var organization = _repository.User.GetUsers(userId, trackChanges: false);
+            if (organization == null)
+            {
+                _logger.LogInfo($"User with id: {userId} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var courseDb = _repository.Course.GetCourse(userId, id, trackChanges: false);
+            if (courseDb == null)
+            {
+                _logger.LogInfo($"Course with id: {id} doesn't exist in the database.");
+                return NotFound();
+            }
+
+            var course = _mapper.Map<CourseDto>(courseDb);
+
+            return Ok(course);
+        }
+
     }
 }
